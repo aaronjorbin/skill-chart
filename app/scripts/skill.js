@@ -24,6 +24,7 @@ var skills = {
 	],
 	maxPoints: 40,
 	currentPoints: 0,
+	assigned: [],
 	capitalP: function(str){
 		return _.titleize(str).replace(/Wordpress/g, 'WordPress')
 
@@ -33,10 +34,11 @@ var skills = {
 
 	init: function () {
 		var self = this
-		console.log('go')
 		this.drawChart()
+		if (window.location.search !== "")
+			this.load()
 		$('.level-1').find('.skill-unavailable').removeClass('skill-unavailable')
-		self.updatePoints()
+		this.updatePoints()
 		$('.skill').click(function (e) {
 			var up = $('#sc-' + $(this).data('skill') + '--' + (parseInt($(this).data('level'), 10) + 1))
 			e.preventDefault()
@@ -52,6 +54,8 @@ var skills = {
 
 
 				self.currentPoints = self.currentPoints - 1
+				self.assigned = _.without(self.assigned, $(this).attr('id')) 
+//				self.assigned[$(this).attr('id')] = false
 			} else {
 				if ((self.currentPoints + 1) > self.maxPoints)
 					return
@@ -60,8 +64,10 @@ var skills = {
 				up.removeClass('skill-unavailable')
 
 				self.currentPoints = self.currentPoints + 1
+				self.assigned.push($(this).attr('id'))
 			}
 			self.updatePoints()
+			self.save()
 		})
 	},
 
@@ -69,6 +75,28 @@ var skills = {
 		var points = this.maxPoints - this.currentPoints
 		$('#points-remaining').text(points)
 	},
+
+	save:function(){
+		console.log(this.assigned)
+		window.history.replaceState(this.assigned, "Jake's Theory of Skill", '?sc=' + 
+			encodeURIComponent( JSON.stringify(this.assigned) ) )
+	},
+	addBlock: function(item){
+			var up = $('#sc-' + item.data('skill') + '--' + (parseInt(item.data('level'), 10) + 1))
+			item.addClass('skill-active')
+			up.removeClass('skill-unavailable')
+			this.currentPoints = this.currentPoints + 1
+	},
+	load: function(){
+		var toLoad = JSON.parse(decodeURIComponent(window.location.search.substring(1).split('=')[1]))
+		_.each(toLoad, function(id){
+			console.log(this)
+			this.addBlock( $('#'+id) )
+		}, this)
+		this.assigned = toLoad
+		console.log(this.currentPoints)
+	},
+
 	drawChart: function () {
 		var html = [],
 			template = _.template($('#tdTemplate').text()),
