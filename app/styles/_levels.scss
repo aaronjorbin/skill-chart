@@ -1,0 +1,21 @@
+/* color palette stolen from http://www.colourlovers.com/palette/3160434/Used_Book_Store */
+$green: #084132;
+$red: #D2381C;
+
+$bottom_color: $green;
+$top_color: $red;
+
+@mixin make-levels($levels, $base){
+	@for $i from 1 through $levels {
+		.level-#{$i} a.skill{
+
+			height: $base +  pow( $i, 1.681) ;
+		}
+
+		.level-#{$i} a.skill-active {
+			$percent: $i/$levels * 100%;
+			background-color: mix($top_color, $bottom_color, $percent); 
+
+		}
+	}
+}
