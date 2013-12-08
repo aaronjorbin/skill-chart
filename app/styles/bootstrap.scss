@@ -1,0 +1,39 @@
+@import 'sass-bootstrap/lib/bootstrap'; 
+
+a.skill {
+	height: 30px;
+	width: 30px;
+	border: 1px solid blue;
+	display: block;
+	&:hover{
+		text-decoration:none;
+		border-color: green;
+	}
+	text-align:center;
+}
+
+a.skill-unavailable{
+	cursor: not-allowed;
+	&:hover{
+		border-color: blue;
+	}
+}
+
+a.skill-active{
+	background: green;
+}
+.labels{
+	@include rotate( 45deg );
+	padding-top:15px;
+	padding-left:10px;
+}
+
+td, th{
+	width: 55px;
+	text-align:center;
+}
+
+#skillTable{
+	width: 100%; 
+	table-layout: fixed; 
+}

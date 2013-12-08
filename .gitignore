@@ -1,0 +1,5 @@
+node_modules
+temp
+.sass-cache
+app/components
+.tmp
