@@ -24,6 +24,10 @@ var skills = {
 	],
 	maxPoints: 40,
 	currentPoints: 0,
+	capitalP: function(str){
+		return _.titleize(str).replace(/Wordpress/g, 'WordPress')
+
+	},
 
 
 
@@ -87,7 +91,7 @@ var skills = {
 		html.push('<tr>')
 		for (ii = 0; ii < this.list.length; ii++) {
 			html.push('<th class="labels">')
-			html.push(_.titleize(this.list[ii].replace(/\s/g, '&nbsp;')))
+			html.push( this.capitalP(this.list[ii].replace(/\s/g, '&nbsp;')))
 			html.push('</th>')
 		}
 		html.push('</tr>')
